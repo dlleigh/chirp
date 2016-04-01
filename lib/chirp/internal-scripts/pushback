@@ -19,7 +19,7 @@ set -o xtrace
 }
 
 : ${CHIRP_GIT_EXE:=git}
-: ${CHIRP_GIT_URL:='github.com'}
+: ${CHIRP_GIT_HOSTNAME:='github.com'}
 : ${CHIRP_GIT_USERNAME:='Travis CI'}
 
 ${CHIRP_GIT_EXE} checkout "${TRAVIS_BRANCH}"
@@ -34,10 +34,12 @@ Travis-Commit: ${TRAVIS_COMMIT}
 Travis-Branch: ${TRAVIS_BRANCH}
 "
 
+echo "CHIRP_GIT_HOSTNAME=${CHIRP_GIT_HOSTNAME}"
+
 (
   set +x
   ${CHIRP_GIT_EXE} remote set-url \
-    origin "https://${GITHUB_OAUTH_TOKEN}:x-oauth-basic@${CHIRP_GIT_URL}/${TRAVIS_REPO_SLUG}.git"
+    origin "https://${GITHUB_OAUTH_TOKEN}:x-oauth-basic@${CHIRP_GIT_HOSTNAME}/${TRAVIS_REPO_SLUG}.git"
 )
 
 ${CHIRP_GIT_EXE} push --quiet origin "${TRAVIS_BRANCH}"
