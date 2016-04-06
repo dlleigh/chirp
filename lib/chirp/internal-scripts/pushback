@@ -34,12 +34,10 @@ Travis-Commit: ${TRAVIS_COMMIT}
 Travis-Branch: ${TRAVIS_BRANCH}
 "
 
-echo "CHIRP_GIT_HOSTNAME=${CHIRP_GIT_HOSTNAME}"
-
 (
   set +x
   ${CHIRP_GIT_EXE} remote set-url \
     origin "https://${GITHUB_OAUTH_TOKEN}:x-oauth-basic@${CHIRP_GIT_HOSTNAME}/${TRAVIS_REPO_SLUG}.git"
 )
 
-${CHIRP_GIT_EXE} push --quiet origin "${TRAVIS_BRANCH}"
+until ${CHIRP_GIT_EXE} push --quiet origin "${TRAVIS_BRANCH}"; do echo retry; done
