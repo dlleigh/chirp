@@ -23,7 +23,7 @@ set -o xtrace
 : ${CHIRP_GIT_USERNAME:='Travis CI'}
 
 ${CHIRP_GIT_EXE} checkout "${TRAVIS_BRANCH}"
-${CHIRP_GIT_EXE} pull --rebase origin "${TRAVIS_BRANCH}"
+until ${CHIRP_GIT_EXE} pull --rebase origin "${TRAVIS_BRANCH}"; do echo retry; done
 [[ $TRAVIS ]] && ${CHIRP_GIT_EXE} config --global user.name ${CHIRP_GIT_USERNAME}
 [[ $TRAVIS ]] && ${CHIRP_GIT_EXE} config --global user.email 'contact+chirp@travis-ci.org'
 ${CHIRP_GIT_EXE} commit --allow-empty -m "Bump self after commit ${TRAVIS_COMMIT}
